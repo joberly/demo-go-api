@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+    title: Demo Service
+    description: Demonstration Go Service
+    version: "1.0"
+servers:
+    - url: http://localhost:8000
+paths:
+    /rand:
+        get:
+            tags:
+                - demo
+            summary: rand demo
+            operationId: demo#rand
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RandRequestBody'
+                        example:
+                            max: 6591451045836003222
+                            min: 8613984219942708242
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RandResult'
+                            example:
+                                result: 4498278195037445041
+                "400":
+                    description: 'invalid_arguments: Invalid arguments to API'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+components:
+    schemas:
+        Error:
+            type: object
+            properties:
+                fault:
+                    type: boolean
+                    description: Is the error a server-side fault?
+                    example: true
+                id:
+                    type: string
+                    description: ID is a unique identifier for this particular occurrence of the problem.
+                    example: 123abc
+                message:
+                    type: string
+                    description: Message is a human-readable explanation specific to this occurrence of the problem.
+                    example: parameter 'p' must be an integer
+                name:
+                    type: string
+                    description: Name is the name of this class of errors.
+                    example: bad_request
+                temporary:
+                    type: boolean
+                    description: Is the error temporary?
+                    example: true
+                timeout:
+                    type: boolean
+                    description: Is the error a timeout?
+                    example: false
+            example:
+                id: 3F1FKVRR
+                message: Value of ID must be an integer
+                name: bad_request
+            required:
+                - name
+                - id
+                - message
+                - temporary
+                - timeout
+                - fault
+        RandRequestBody:
+            type: object
+            properties:
+                max:
+                    type: integer
+                    example: 5388222512051860888
+                    format: int64
+                min:
+                    type: integer
+                    example: 2880600150647218632
+                    format: int64
+            example:
+                max: 6766204256723479954
+                min: 3367034883031153056
+        RandResult:
+            type: object
+            properties:
+                result:
+                    type: integer
+                    example: 6385578980826583310
+                    format: int64
+            example:
+                result: 6268220488161336711
+tags:
+    - name: demo
+      description: Demonstration Go Service
