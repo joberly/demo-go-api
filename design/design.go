@@ -9,7 +9,7 @@ var _ = API("demo", func() {
 	Description("Demonstration Go Service")
 	Server("demo", func() {
 		Host("localhost", func() {
-			URI("http://localhost:8000")
+			URI("http://:8000")
 		})
 	})
 	Error("invalid_arguments")

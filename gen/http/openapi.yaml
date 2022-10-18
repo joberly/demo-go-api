@@ -3,7 +3,7 @@ info:
     title: Demo Service
     description: Demonstration Go Service
     version: ""
-host: localhost:8000
+host: :8000
 consumes:
     - application/json
     - application/xml
