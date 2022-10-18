@@ -28,10 +28,7 @@ func UsageCommands() string {
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` demo rand --body '{
-      "max": 6591451045836003222,
-      "min": 8613984219942708242
-   }'` + "\n" +
+	return os.Args[0] + ` demo rand --min 8613984219942708242 --max 6591451045836003222` + "\n" +
 		""
 }
 
@@ -47,8 +44,9 @@ func ParseEndpoint(
 	var (
 		demoFlags = flag.NewFlagSet("demo", flag.ContinueOnError)
 
-		demoRandFlags    = flag.NewFlagSet("rand", flag.ExitOnError)
-		demoRandBodyFlag = demoRandFlags.String("body", "REQUIRED", "")
+		demoRandFlags   = flag.NewFlagSet("rand", flag.ExitOnError)
+		demoRandMinFlag = demoRandFlags.String("min", "", "")
+		demoRandMaxFlag = demoRandFlags.String("max", "", "")
 	)
 	demoFlags.Usage = demoUsage
 	demoRandFlags.Usage = demoRandUsage
@@ -117,7 +115,7 @@ func ParseEndpoint(
 			switch epn {
 			case "rand":
 				endpoint = c.Rand()
-				data, err = democ.BuildRandPayload(*demoRandBodyFlag)
+				data, err = democ.BuildRandPayload(*demoRandMinFlag, *demoRandMaxFlag)
 			}
 		}
 	}
@@ -142,15 +140,13 @@ Additional help:
 `, os.Args[0])
 }
 func demoRandUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] demo rand -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] demo rand -min INT64 -max INT64
 
 Rand implements rand.
-    -body JSON: 
+    -min INT64: 
+    -max INT64: 
 
 Example:
-    %[1]s demo rand --body '{
-      "max": 6591451045836003222,
-      "min": 8613984219942708242
-   }'
+    %[1]s demo rand --min 8613984219942708242 --max 6591451045836003222
 `, os.Args[0])
 }

@@ -8,27 +8,38 @@
 package client
 
 import (
-	"encoding/json"
 	"fmt"
+	"strconv"
 
 	demo "github.com/joberly/demo-go-api/gen/demo"
 )
 
 // BuildRandPayload builds the payload for the demo rand endpoint from CLI
 // flags.
-func BuildRandPayload(demoRandBody string) (*demo.RandPayload, error) {
-	var err error
-	var body RandRequestBody
+func BuildRandPayload(demoRandMin string, demoRandMax string) (*demo.RandPayload, error) {
+	var min *int64
 	{
-		err = json.Unmarshal([]byte(demoRandBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"max\": 6591451045836003222,\n      \"min\": 8613984219942708242\n   }'")
+		if demoRandMin != "" {
+			val, err := strconv.ParseInt(demoRandMin, 10, 64)
+			min = &val
+			if err != nil {
+				return nil, fmt.Errorf("invalid value for min, must be INT64")
+			}
 		}
 	}
-	v := &demo.RandPayload{
-		Min: body.Min,
-		Max: body.Max,
+	var max *int64
+	{
+		if demoRandMax != "" {
+			val, err := strconv.ParseInt(demoRandMax, 10, 64)
+			max = &val
+			if err != nil {
+				return nil, fmt.Errorf("invalid value for max, must be INT64")
+			}
+		}
 	}
+	v := &demo.RandPayload{}
+	v.Min = min
+	v.Max = max
 
 	return v, nil
 }

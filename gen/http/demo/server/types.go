@@ -13,13 +13,6 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// RandRequestBody is the type of the "demo" service "rand" endpoint HTTP
-// request body.
-type RandRequestBody struct {
-	Min *int64 `form:"min,omitempty" json:"min,omitempty" xml:"min,omitempty"`
-	Max *int64 `form:"max,omitempty" json:"max,omitempty" xml:"max,omitempty"`
-}
-
 // RandResponseBody is the type of the "demo" service "rand" endpoint HTTP
 // response body.
 type RandResponseBody struct {
@@ -68,11 +61,10 @@ func NewRandInvalidArgumentsResponseBody(res *goa.ServiceError) *RandInvalidArgu
 }
 
 // NewRandPayload builds a demo service rand endpoint payload.
-func NewRandPayload(body *RandRequestBody) *demo.RandPayload {
-	v := &demo.RandPayload{
-		Min: body.Min,
-		Max: body.Max,
-	}
+func NewRandPayload(min *int64, max *int64) *demo.RandPayload {
+	v := &demo.RandPayload{}
+	v.Min = min
+	v.Max = max
 
 	return v
 }

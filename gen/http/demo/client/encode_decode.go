@@ -10,6 +10,7 @@ package client
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -42,10 +43,14 @@ func EncodeRandRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.R
 		if !ok {
 			return goahttp.ErrInvalidType("demo", "rand", "*demo.RandPayload", v)
 		}
-		body := NewRandRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("demo", "rand", err)
+		values := req.URL.Query()
+		if p.Min != nil {
+			values.Add("min", fmt.Sprintf("%v", *p.Min))
 		}
+		if p.Max != nil {
+			values.Add("max", fmt.Sprintf("%v", *p.Max))
+		}
+		req.URL.RawQuery = values.Encode()
 		return nil
 	}
 }

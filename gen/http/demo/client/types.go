@@ -8,17 +8,9 @@
 package client
 
 import (
-	demo "github.com/joberly/demo-go-api/gen/demo"
 	demoviews "github.com/joberly/demo-go-api/gen/demo/views"
 	goa "goa.design/goa/v3/pkg"
 )
-
-// RandRequestBody is the type of the "demo" service "rand" endpoint HTTP
-// request body.
-type RandRequestBody struct {
-	Min *int64 `form:"min,omitempty" json:"min,omitempty" xml:"min,omitempty"`
-	Max *int64 `form:"max,omitempty" json:"max,omitempty" xml:"max,omitempty"`
-}
 
 // RandResponseBody is the type of the "demo" service "rand" endpoint HTTP
 // response body.
@@ -42,16 +34,6 @@ type RandInvalidArgumentsResponseBody struct {
 	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
 	// Is the error a server-side fault?
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
-}
-
-// NewRandRequestBody builds the HTTP request body from the payload of the
-// "rand" endpoint of the "demo" service.
-func NewRandRequestBody(p *demo.RandPayload) *RandRequestBody {
-	body := &RandRequestBody{
-		Min: p.Min,
-		Max: p.Max,
-	}
-	return body
 }
 
 // NewRandResultViewOK builds a "demo" service "rand" endpoint result from a

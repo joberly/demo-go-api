@@ -20,11 +20,16 @@ paths:
             summary: rand demo
             operationId: demo#rand
             parameters:
-                - name: RandRequestBody
-                  in: body
-                  required: true
-                  schema:
-                    $ref: '#/definitions/DemoRandRequestBody'
+                - name: min
+                  in: query
+                  required: false
+                  type: integer
+                  format: int64
+                - name: max
+                  in: query
+                  required: false
+                  type: integer
+                  format: int64
             responses:
                 "200":
                     description: OK response.
@@ -80,21 +85,6 @@ definitions:
             - temporary
             - timeout
             - fault
-    DemoRandRequestBody:
-        title: DemoRandRequestBody
-        type: object
-        properties:
-            max:
-                type: integer
-                example: 187750462902896855
-                format: int64
-            min:
-                type: integer
-                example: 316549447370967985
-                format: int64
-        example:
-            max: 7736046039662753634
-            min: 4469838493729813501
     DemoRandResponseBody:
         title: 'Mediatype identifier: application/vnd.demo.rand-result; view=default'
         type: object

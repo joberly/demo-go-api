@@ -38,6 +38,8 @@ var _ = Service("demo", func() {
 		Error("invalid_arguments")
 		HTTP(func() {
 			GET("/rand")
+			Param("min")
+			Param("max")
 			Response(StatusOK)
 			Response("invalid_arguments", StatusBadRequest, func() {
 				Description("Invalid arguments to API")

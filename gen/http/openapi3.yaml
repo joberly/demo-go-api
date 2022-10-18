@@ -12,15 +12,23 @@ paths:
                 - demo
             summary: rand demo
             operationId: demo#rand
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/RandRequestBody'
-                        example:
-                            max: 6591451045836003222
-                            min: 8613984219942708242
+            parameters:
+                - name: min
+                  in: query
+                  allowEmptyValue: true
+                  schema:
+                    type: integer
+                    example: 5388222512051860888
+                    format: int64
+                  example: 3367034883031153056
+                - name: max
+                  in: query
+                  allowEmptyValue: true
+                  schema:
+                    type: integer
+                    example: 6766204256723479954
+                    format: int64
+                  example: 6385578980826583310
             responses:
                 "200":
                     description: OK response.
@@ -60,11 +68,11 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: true
+                    example: false
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: false
+                    example: true
             example:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
@@ -76,29 +84,15 @@ components:
                 - temporary
                 - timeout
                 - fault
-        RandRequestBody:
-            type: object
-            properties:
-                max:
-                    type: integer
-                    example: 5388222512051860888
-                    format: int64
-                min:
-                    type: integer
-                    example: 2880600150647218632
-                    format: int64
-            example:
-                max: 6766204256723479954
-                min: 3367034883031153056
         RandResult:
             type: object
             properties:
                 result:
                     type: integer
-                    example: 6385578980826583310
+                    example: 316549447370967985
                     format: int64
             example:
-                result: 6268220488161336711
+                result: 187750462902896855
 tags:
     - name: demo
       description: Demonstration Go Service

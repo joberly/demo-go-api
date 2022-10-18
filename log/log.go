@@ -25,6 +25,6 @@ func (z *zapAdapter) Log(keyvals ...interface{}) error {
 	for i := 0; i < len(keyvals); i += 2 {
 		fields[i/2] = zap.Any(fmt.Sprint(keyvals[i]), keyvals[i+1])
 	}
-	z.logger.Info("log", fields...)
+	z.logger.Info("log", fields[:len(keyvals)/2]...)
 	return nil
 }

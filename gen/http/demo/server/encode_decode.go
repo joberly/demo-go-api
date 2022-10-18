@@ -10,8 +10,8 @@ package server
 import (
 	"context"
 	"errors"
-	"io"
 	"net/http"
+	"strconv"
 
 	demoviews "github.com/joberly/demo-go-api/gen/demo/views"
 	goahttp "goa.design/goa/v3/http"
@@ -35,17 +35,34 @@ func EncodeRandResponse(encoder func(context.Context, http.ResponseWriter) goaht
 func DecodeRandRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body RandRequestBody
-			err  error
+			min *int64
+			max *int64
+			err error
 		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
+		{
+			minRaw := r.URL.Query().Get("min")
+			if minRaw != "" {
+				v, err2 := strconv.ParseInt(minRaw, 10, 64)
+				if err2 != nil {
+					err = goa.MergeErrors(err, goa.InvalidFieldTypeError("min", minRaw, "integer"))
+				}
+				min = &v
 			}
-			return nil, goa.DecodePayloadError(err.Error())
 		}
-		payload := NewRandPayload(&body)
+		{
+			maxRaw := r.URL.Query().Get("max")
+			if maxRaw != "" {
+				v, err2 := strconv.ParseInt(maxRaw, 10, 64)
+				if err2 != nil {
+					err = goa.MergeErrors(err, goa.InvalidFieldTypeError("max", maxRaw, "integer"))
+				}
+				max = &v
+			}
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewRandPayload(min, max)
 
 		return payload, nil
 	}
