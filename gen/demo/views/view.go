@@ -21,7 +21,7 @@ type RandResult struct {
 
 // RandResultView is a type that runs validations on a projected type.
 type RandResultView struct {
-	Result *int
+	Result *int64
 }
 
 var (

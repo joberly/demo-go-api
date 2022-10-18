@@ -5,6 +5,8 @@ FROM ${ARCH}golang:1.19.2 AS builder
 COPY ./ /go/src/github.com/joberly/demo-go-api
 
 RUN set -e ;\
+    cd /go/src/github.com/joberly/demo-go-api ;\
+    go test -timeout 30s ;\
     cd /go/src/github.com/joberly/demo-go-api/cmd/demo ;\
     go build .
 

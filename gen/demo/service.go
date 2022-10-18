@@ -32,13 +32,13 @@ var MethodNames = [1]string{"rand"}
 
 // RandPayload is the payload type of the demo service rand method.
 type RandPayload struct {
-	Min *int
-	Max *int
+	Min *int64
+	Max *int64
 }
 
 // RandResult is the result type of the demo service rand method.
 type RandResult struct {
-	Result *int
+	Result *int64
 }
 
 // MakeInvalidArguments builds a goa.ServiceError from an error.

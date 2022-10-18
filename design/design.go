@@ -19,7 +19,7 @@ var RandResult = ResultType("application/vnd.demo.rand-result", func() {
 	Description("Result of a rand operation.")
 	TypeName("RandResult")
 	Attributes(func() {
-		Attribute("result", Int)
+		Attribute("result", Int64)
 	})
 	View("default", func() {
 		Attribute("result")
@@ -31,8 +31,8 @@ var _ = Service("demo", func() {
 
 	Method("rand", func() {
 		Payload(func() {
-			Attribute("min", Int)
-			Attribute("max", Int)
+			Attribute("min", Int64)
+			Attribute("max", Int64)
 		})
 		Result(RandResult)
 		Error("invalid_arguments")

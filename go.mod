@@ -3,11 +3,14 @@ module github.com/joberly/demo-go-api
 go 1.19
 
 require (
+	github.com/openlyinc/pointy v1.1.2
+	github.com/stretchr/testify v1.8.0
 	go.uber.org/zap v1.23.0
 	goa.design/goa/v3 v3.10.1
 )
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598 // indirect
 	github.com/dimfeld/httptreemux/v5 v5.4.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -17,6 +20,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/manveru/faker v0.0.0-20171103152722-9fbc68a78c4d // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/smartystreets/assertions v1.13.0 // indirect
 	github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea // indirect

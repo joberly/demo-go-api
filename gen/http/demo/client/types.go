@@ -16,14 +16,14 @@ import (
 // RandRequestBody is the type of the "demo" service "rand" endpoint HTTP
 // request body.
 type RandRequestBody struct {
-	Min *int `form:"min,omitempty" json:"min,omitempty" xml:"min,omitempty"`
-	Max *int `form:"max,omitempty" json:"max,omitempty" xml:"max,omitempty"`
+	Min *int64 `form:"min,omitempty" json:"min,omitempty" xml:"min,omitempty"`
+	Max *int64 `form:"max,omitempty" json:"max,omitempty" xml:"max,omitempty"`
 }
 
 // RandResponseBody is the type of the "demo" service "rand" endpoint HTTP
 // response body.
 type RandResponseBody struct {
-	Result *int `form:"result,omitempty" json:"result,omitempty" xml:"result,omitempty"`
+	Result *int64 `form:"result,omitempty" json:"result,omitempty" xml:"result,omitempty"`
 }
 
 // RandInvalidArgumentsResponseBody is the type of the "demo" service "rand"
