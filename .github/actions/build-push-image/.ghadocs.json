@@ -1,0 +1,16 @@
+{
+  "paths": {
+    "action": "action.yml",
+    "readme": "README.md"
+  },
+  "show_logo": false,
+  "versioning": {
+    "enabled": false,
+    "override": "",
+    "default_branch": ""
+  },
+  "owner": ".",
+  "repo": ".github/actions/build-push-image",
+  "title_prefix": "GitHub Action: ",
+  "pretty": true
+}
