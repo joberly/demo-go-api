@@ -8,15 +8,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      name: Checkout
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-        - name: Build and push image
-          uses: ./.github/actions/build-push-image
-          with:
-            name: demo-go-api
-            latest: ${{ ((format('refs/heads/{0}', github.event.repository.default_branch) == github.ref) && 'true') || 'false' }}
-            platforms: 'linux/amd64'
-            username: ${{ GHCR_USERNAME }}
-            password: ${{ GHCR_PASSWORD }}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build and push image
+        uses: ./.github/actions/build-push-image
+        with:
+          name: demo-go-api
+          latest: ${{ ((format('refs/heads/{0}', github.event.repository.default_branch) == github.ref) && 'true') || 'false' }}
+          platforms: 'linux/amd64'
+          username: ${{ GHCR_USERNAME }}
+          password: ${{ GHCR_PASSWORD }}
