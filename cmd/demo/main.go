@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"net"
 	"net/url"
 	"os"
@@ -14,6 +13,7 @@ import (
 
 	demoapi "github.com/joberly/demo-go-api"
 	demo "github.com/joberly/demo-go-api/gen/demo"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -28,30 +28,21 @@ func main() {
 	)
 	flag.Parse()
 
-	// Setup logger. Replace logger with your own log package of choice.
-	var (
-		logger *log.Logger
-	)
-	{
-		logger = log.New(os.Stderr, "[demoapi] ", log.Ltime)
+	// Set up logger
+	// TODO use env var to determine environment
+	logger, err := zap.NewDevelopment()
+	if err != nil {
+		// TODO make this more graceful
+		panic(err)
 	}
+	sugared := logger.Sugar()
 
 	// Initialize the services.
-	var (
-		demoSvc demo.Service
-	)
-	{
-		demoSvc = demoapi.NewDemo(logger)
-	}
+	demoSvc := demoapi.NewDemo(logger)
 
 	// Wrap the services in endpoints that can be invoked from other services
 	// potentially running in different processes.
-	var (
-		demoEndpoints *demo.Endpoints
-	)
-	{
-		demoEndpoints = demo.NewEndpoints(demoSvc)
-	}
+	demoEndpoints := demo.NewEndpoints(demoSvc)
 
 	// Create channel used by both the signal handler and server goroutines
 	// to notify the main goroutine when to stop the server.
@@ -75,7 +66,7 @@ func main() {
 			addr := "http://localhost:8000"
 			u, err := url.Parse(addr)
 			if err != nil {
-				logger.Fatalf("invalid URL %#v: %s\n", addr, err)
+				sugared.Fatalf("invalid URL %#v: %s\n", addr, err)
 			}
 			if *secureF {
 				u.Scheme = "https"
@@ -86,7 +77,7 @@ func main() {
 			if *httpPortF != "" {
 				h, _, err := net.SplitHostPort(u.Host)
 				if err != nil {
-					logger.Fatalf("invalid URL %#v: %s\n", u.Host, err)
+					sugared.Fatalf("invalid URL %#v: %s\n", u.Host, err)
 				}
 				u.Host = net.JoinHostPort(h, *httpPortF)
 			} else if u.Port() == "" {
@@ -96,15 +87,15 @@ func main() {
 		}
 
 	default:
-		logger.Fatalf("invalid host argument: %q (valid hosts: localhost)\n", *hostF)
+		sugared.Fatalf("invalid host argument: %q (valid hosts: localhost)\n", *hostF)
 	}
 
 	// Wait for signal.
-	logger.Printf("exiting (%v)", <-errc)
+	sugared.Infof("exiting (%v)", <-errc)
 
 	// Send cancellation signal to the goroutines.
 	cancel()
 
 	wg.Wait()
-	logger.Println("exited")
+	sugared.Infoln("exited")
 }
